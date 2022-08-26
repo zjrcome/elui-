@@ -1,0 +1,23 @@
+async submits() {
+      let trues = [];
+      if (this.tableData.length > 0) {
+        this.submitshow = true;
+        this.tableData.forEach(async (item) => {
+          if (item.status != '2') {
+            trues.push(
+              new Promise(async (resolve, reject) => {
+                let data = {
+                  picklistsId: item.id,
+                };
+                let result = await PickPicklists(data);
+                resolve(result);
+              })
+            );
+          }
+        });
+        Promise.all(trues).then((res) => {
+          this.submitshow = false;
+          this.cancel();
+        });
+      }
+    },
